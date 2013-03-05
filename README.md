@@ -11,6 +11,6 @@ Beware, the songs aren't super quality or anything, don't be so picky.
 
 Requirements
 ------------
-inotifywait - To watch for files that are closed after having been written to in the browser cache
-avconv - To grab embedded song metadata
-iconv - Because the song metadata is in a terrible text encoding
+* inotifywait - To watch for files that are closed after having been written to in the browser cache
+* avconv - To grab embedded song metadata
+* iconv - Because the song metadata is in a terrible text encoding
