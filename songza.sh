@@ -12,16 +12,17 @@ inotifywait -m -e close_write --format '%f' $CACHE_FOLDER | while read line
 do
     original="$CACHE_FOLDER/$line"
     if [ -n `file $original | \grep --count 'MPEG v4'` ]; then
-        metadata=$(avconv -i $original 2>&1)
-        title=$(echo "$metadata" | \grep title | cut -d':' -f 2 | sed 's/^ //' | iconv -f WINDOWS-1252)
-        artist=$(echo "$metadata" | \grep artist | cut -d':' -f 2 | sed 's/^ //' | iconv -f WINDOWS-1252)
-        album=$(echo "$metadata" | \grep album | cut -d':' -f 2 | sed 's/^ //' | iconv -f WINDOWS-1252)
+        metadata=$(avconv -i $original 2>&1 | iconv -f WINDOWS-1252)
+        title=$(echo  "$metadata" | \grep -P '^\s+title\s+:\s'  | cut -d':' -f 2 | sed 's/^ //')
+        artist=$(echo "$metadata" | \grep -P '^\s+artist\s+:\s' | cut -d':' -f 2 | sed 's/^ //')
+        album=$(echo  "$metadata" | \grep -P '^\s+album\s+:\s'  | cut -d':' -f 2 | sed 's/^ //')
         if [[ -n $title && -n $artist && -n $album ]]; then
             folder="$SONG_STORE/$artist/$album"
             newFile="$folder/$title.m4a"
             if [ ! -f "$newFile" ]; then
                 mkdir -p "$folder"
                 cp "$original" "$newFile"
+                echo "Added $title by $artist"
             fi
         fi
     fi
