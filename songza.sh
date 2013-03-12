@@ -19,11 +19,11 @@ do
         if [[ -n $title && -n $artist && -n $album ]]; then
             folder="$SONG_STORE/$artist/$album"
             newFile="$folder/$title.m4a"
+            mkdir -p "$folder"
             if [ ! -f "$newFile" ]; then
-                mkdir -p "$folder"
-                cp "$original" "$newFile"
                 echo "Added $title by $artist"
             fi
+            cp "$original" "$newFile"
         fi
     fi
 done
